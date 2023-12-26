@@ -33,8 +33,6 @@ reducersDirectory="$currentDirectory/src/reducers"
 stylesDirectory="$currentDirectory/src/styles"
 typesDirectory="$currentDirectory/src/types"
 
-prettierFile=".prettierrc"
-editorconfigFile=".editorconfig"
 eslintFile=".eslintrc.json"
 
 # Inicialización de .sh
@@ -154,7 +152,7 @@ cp $templatesDirectory/providers/*.tsx $providersDirectory
 echo "$tab providers files copied successfully."
 
 # contexts files
-cp $templatesDirectory/contexts/*.tsx $contextsDirectory
+cp $templatesDirectory/contexts/*.ts $contextsDirectory
 echo "$tab contexts files copied successfully."
 
 # reducers files
@@ -165,9 +163,18 @@ echo "$tab reducers files copied successfully."
 cp $templatesDirectory/hooks/*.ts $hooksDirectory
 echo "$tab hooks copied successfully."
 
-# Hooks
+# Linter, prettier and editorconfig
 cp $templatesDirectory/.eslintignore $currentDirectory
 echo "$tab .eslintignore copied successfully."
+
+cp $templatesDirectory/.prettierrc $currentDirectory
+echo "$tab .prettierrc copied successfully."
+
+cp $templatesDirectory/.editorconfig $currentDirectory
+echo "$tab .editorconfig copied successfully."
+
+cp $templatesDirectory/.eslintrc.json $currentDirectory
+echo "$tab .eslintrc.json copied successfully."
 
 # -------------
 
@@ -194,14 +201,14 @@ echo "$tab types copied successfully."
 
 # -------------
 
-copyJSConfigFiles $currentDirectory
+# copyJSConfigFiles $currentDirectory
 
 # DEPENDENCES
 # ----------------------------------------------------------------------------------------------------------------------
 # Instalación de dependencias
 echo "Instaling dependences..."
 
-pnpm install next-themes class-variance-authority clsx lucide-react @radix-ui/react-icons usehooks-ts just-debounce-it
+pnpm install next-themes class-variance-authority clsx lucide-react @radix-ui/react-icons usehooks-ts just-debounce-it @tanstack/react-table
 pnpm install eslint @typescript-eslint/eslint-plugin@latest eslint-plugin-react@latest @typescript-eslint/parser@latest tailwind-merge tailwindcss-animate -D
 
 # SHADCN COMPONENTS
@@ -209,15 +216,16 @@ pnpm install eslint @typescript-eslint/eslint-plugin@latest eslint-plugin-react@
 # Instalación de componentes de shadcn necesarios, uso propio comando shadcn
 echo "Instaling shadcn components..."
 
-components=("toast" "select" "button" "dropdown-menu")
+components=("select" "button" "dropdown-menu" "table")
 
 for component in "${components[@]}"; do
     echo "Y" | pnpm dlx shadcn-ui@latest add "$component"
 done
 
-# Auth
+# Flags
 # ----------------------------------------------------------------------------------------------------------------------
 authFlag=false
+sonnerFlag=false
 
 # Iterate over all arguments
 for argument in "$@"; do
@@ -225,11 +233,26 @@ for argument in "$@"; do
     if [[ $argument == "--auth" ]]; then
         authFlag=true
     fi
+    if [[ $argument == "--sonner" ]]; then
+        sonnerFlag=true
+    fi
 done
 
+# Auth
+# ----------------------------------------------------------------------------------------------------------------------
 # Print whether the --auth flag was passed
 if $authFlag; then
     echo "The --auth flag was passed"
+fi
+
+# Sonner
+# ----------------------------------------------------------------------------------------------------------------------
+if $sonnerFlag; then
+    echo "Using sonner components"
+    echo "Y" | pnpm dlx shadcn-ui@latest add sonner
+else
+    echo "Using default toast shadcn components"
+    echo "Y" | pnpm dlx shadcn-ui@latest add toast
 fi
 
 # ----------------------------------------------------------------------------------------------------------------------

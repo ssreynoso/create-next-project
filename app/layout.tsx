@@ -4,7 +4,6 @@ import '@/styles/animations.css'
 import '@/styles/scroll-bar.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Toaster } from '@/components/ui/toaster'
 import { NavBar } from '@/components/nav-bar'
 import { Providers } from '@/providers'
 
@@ -24,7 +23,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <div className='mt-nav-bar-height'>
                         {children}
                     </div>
-                    <Toaster />
                 </Providers>
             </body>
         </html>
