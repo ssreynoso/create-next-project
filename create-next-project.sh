@@ -43,85 +43,40 @@ source ~/Templates/sh-functions/copy-js-config-files.sh
 # ----------------------------------------------------------------------------------------------------------------------
 echo "Creating directories..."
 
+create_directory() {
+    directory=$1
+    directoryMessage=$2
+
+    if [ -e $directory ]; then
+        echo "$tab The $directoryMessage directory already exists"
+    else
+        mkdir $directory
+        echo "$tab directory created: src/$directoryMessage"
+    fi
+}
+
+# app/(with-nav-bar)
+create_directory "$appDirectory/(with-nav-bar)" "app/(with-nav-bar)"
 # components
-if [ -e $componentsDirectory ]; then
-	echo "$tab The components directory already exists"
-else
-	mkdir $componentsDirectory
-	echo "$tab directory created: src/components"
-fi
-
+create_directory $componentsDirectory components
 # components - data table
-if [ -e "$componentsDirectory/data-table" ]; then
-    echo "$tab The components/data-table directory already exists"
-else
-    mkdir "$componentsDirectory/data-table"
-    echo "$tab directory created: src/components/data-table"
-fi
-
+create_directory "$componentsDirectory/data-table" components/data-table
 # hooks
-if [ -e $hooksDirectory ]; then
-	echo "$tab The hooks directory already exists"
-else
-	mkdir $hooksDirectory
-	echo "$tab directory created: src/hooks"
-fi
-
+create_directory $hooksDirectory "hooks"
 # lib
-if [ -e $libDirectory ]; then
-	echo "$tab The lib directory already exists"
-else
-	mkdir $libDirectory
-	echo "$tab directory created: src/lib"
-fi
-
+create_directory $libDirectory "lib"
 # providers
-if [ -e $providersDirectory ]; then
-	echo "$tab The providers directory already exists"
-else
-	mkdir $providersDirectory
-	echo "$tab directory created: src/providers"
-fi
-
+create_directory $providersDirectory "providers"
 # contexts
-if [ -e $contextsDirectory ]; then
-	echo "$tab The contexts directory already exists"
-else
-	mkdir $contextsDirectory
-	echo "$tab directory created: src/contexts"
-fi
-
+create_directory $contextsDirectory "contexts"
 # reducers
-if [ -e $reducersDirectory ]; then
-	echo "$tab The reducers directory already exists"
-else
-	mkdir $reducersDirectory
-	echo "$tab directory created: src/reducers"
-fi
-
+create_directory $reducersDirectory "reducers"
 # styles
-if [ -e $stylesDirectory ]; then
-	echo "$tab The styles directory already exists"
-else
-	mkdir $stylesDirectory
-	echo "$tab directory created: src/styles"
-fi
-
+create_directory $stylesDirectory "styles"
 # styles/themes
-if [ -e "$stylesDirectory/themes" ]; then
-	echo "$tab The styles/themes directory already exists"
-else
-	mkdir "$stylesDirectory/themes"
-	echo "$tab directory created: src/styles/themes"
-fi
-
+create_directory "$stylesDirectory/themes" "styles/themes"
 # types
-if [ -e $typesDirectory ]; then
-	echo "$tab The types directory already exists"
-else
-	mkdir $typesDirectory
-	echo "$tab directory created: src/types"
-fi
+create_directory $typesDirectory "types"
 
 # FILES
 # ----------------------------------------------------------------------------------------------------------------------
@@ -184,8 +139,9 @@ rm -rf "$currentDirectory/src/app/layout.tsx"
 rm -rf "$currentDirectory/src/app/page.tsx"
 # Copio los que ya tengo
 cp "$templatesDirectory/app/layout.tsx" $appDirectory 
-cp "$templatesDirectory/app/page.tsx" $appDirectory 
-echo "$tab layout and page copied successfully."
+cp "$templatesDirectory/app/(with-nav-bar)/layout.tsx" "$appDirectory/(with-nav-bar)" 
+cp "$templatesDirectory/app/(with-nav-bar)/page.tsx" "$appDirectory/(with-nav-bar)" 
+echo "$tab layouts and page copied successfully."
 
 # Otros componentes
 cp $templatesDirectory/components/*.tsx $componentsDirectory
@@ -242,7 +198,63 @@ done
 # ----------------------------------------------------------------------------------------------------------------------
 # Print whether the --auth flag was passed
 if $authFlag; then
-    echo "The --auth flag was passed"
+    echo "-----------------AUTH-----------------"
+    echo "Instaling next-auth and zod..."
+    pnpm install next-auth zod
+
+    echo "Instaling shadcn components..."
+    components=("input" "card" "form" "skeleton")
+    for component in "${components[@]}"; do
+        echo "Y" | pnpm dlx shadcn-ui@latest add "$component"
+    done
+
+    # ----------------------
+    # Auth pages
+    create_directory "$appDirectory/(auth)" "/app/(auth)"
+    create_directory "$appDirectory/(auth)/login" "/app/(auth)/login"
+    cp $templatesDirectory/auth/page.tsx "$appDirectory/(auth)/login"
+    echo "$tab login page copied successfully."
+
+    # ----------------------
+    # Auth components
+    create_directory "$componentsDirectory/auth" "/components/auth"
+    cp $templatesDirectory/auth/components/*.tsx "$componentsDirectory/auth"
+    rm -rf "$componentsDirectory/nav-bar.tsx"
+    cp $templatesDirectory/auth/nav-bar.tsx $componentsDirectory
+    echo "$tab auth components copied successfully."
+    
+    # ----------------------
+    # Auth api
+    create_directory "$appDirectory/api" "/app/api"
+    create_directory "$appDirectory/api/auth" "/app/api/auth"
+    create_directory "$appDirectory/api/auth/[...nextauth]" "/app/api/auth/[...nextauth]"
+    cp $templatesDirectory/auth/api/route.ts "$appDirectory/api/auth/[...nextauth]"
+
+    # ----------------------
+    # Auth middleware
+    cp $templatesDirectory/auth/middleware.ts $currentDirectory/src
+    echo "$tab auth middleware copied successfully."
+
+    # ----------------------
+    # Auth lib
+    cp $templatesDirectory/auth/auth.ts $libDirectory
+    echo "$tab auth.ts copied successfully."
+
+    # ----------------------
+    # Auth providers
+    rm -rf "$providersDirectory/index.tsx"
+    cp $templatesDirectory/auth/providers/index.tsx $providersDirectory
+    echo "$tab auth providers copied successfully."
+
+    # ----------------------
+    # Auth .env
+    cp $templatesDirectory/auth/.env.local $currentDirectory
+    echo "$tab .env.local copied successfully."
+
+    # ----------------------
+    # Auth hooks
+    cp $templatesDirectory/auth/hooks/*.ts $hooksDirectory
+    echo "$tab auth hooks copied successfully."
 fi
 
 # Sonner
