@@ -1,27 +1,33 @@
-// Import default middleware from 'next-auth/middleware'
-export { default } from 'next-auth/middleware'
+import { NextResponse, type NextRequest } from 'next/server'
+import { nextAuthMiddleware } from './middlewares/next-auth'
+import { JWT } from 'next-auth/jwt'
 
-// Define a configuration object
-// const excludedRoutes = [
-//     'sign-in',
-//     'api',
-//     '_next/static',
-//     '_next/image',
-//     'favicon.ico',
-//     'icon-192x192.png',
-// ]
+// Puedo usar esto si quiero que next-auth se ejecute antes de mi middleware
+// export { default } from 'next-auth'
+
+// Si yo quiero ejecutar mi middleware antes que next-auth, tengo que hacer esto:
+export async function middleware(req: NextRequest) {
+    if (req.nextUrl.pathname.startsWith('/api')) {
+        const refererHeader = req.headers.get('referer')
+        const isSameOrigin  = refererHeader?.startsWith(req.nextUrl.origin)
+        const isDev         = process.env.NODE_ENV === 'development'
+        if (isSameOrigin || isDev) {
+            return NextResponse.next()
+        } else {
+            return NextResponse.json({ error: 'Operación no permitida' }, { status: 403 })
+        }
+    }
+
+    const authResponse = await nextAuthMiddleware(req)
+    if (authResponse.redirect && authResponse.destination) {
+        return NextResponse.redirect(authResponse.destination)
+    }
+
+    return NextResponse.next()
+}
 
 export const config = {
-    // Define a matcher array
     matcher: [
-        // Define a regular expression to match paths
-        // The regular expression excludes the following paths:
-        // - login
-        // - api
-        // - _next/static
-        // - _next/image
-        // - favicon.ico
-        // '/dashboard/:path*',
-        '/((?!login|api|_next/static|_next/image|favicon.ico).*)',
+        '/((?!sign-in|sign-up|_next/static|_next/image|favicon.ico).*)',
     ],
 }

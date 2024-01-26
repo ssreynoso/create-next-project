@@ -32,6 +32,7 @@ contextsDirectory="$currentDirectory/src/contexts"
 reducersDirectory="$currentDirectory/src/reducers"
 stylesDirectory="$currentDirectory/src/styles"
 typesDirectory="$currentDirectory/src/types"
+middlewaresDirectory="$currentDirectory/src/middlewares"
 
 eslintFile=".eslintrc.json"
 
@@ -200,20 +201,22 @@ done
 if $authFlag; then
     echo "-----------------AUTH-----------------"
     echo "Instaling next-auth and zod..."
-    pnpm install next-auth zod
+    pnpm install next-auth zod date-fns
 
     echo "Instaling shadcn components..."
-    components=("input" "card" "form" "skeleton")
+    components=("input" "card" "form" "skeleton" "avatar" "separator")
     for component in "${components[@]}"; do
         echo "Y" | pnpm dlx shadcn-ui@latest add "$component"
     done
 
     # ----------------------
     # Auth pages
-    create_directory "$appDirectory/(auth)" "/app/(auth)"
-    create_directory "$appDirectory/(auth)/login" "/app/(auth)/login"
-    cp $templatesDirectory/auth/page.tsx "$appDirectory/(auth)/login"
-    echo "$tab login page copied successfully."
+    create_directory "$appDirectory/(auth)" "app/(auth)"
+    create_directory "$appDirectory/(auth)/sign-in" "app/(auth)/sign-in"
+    create_directory "$appDirectory/(auth)/sign-up" "app/(auth)/sign-up"
+    cp $templatesDirectory/auth/pages/sign-in/page.tsx "$appDirectory/(auth)/sign-in"
+    cp $templatesDirectory/auth/pages/sign-up/page.tsx "$appDirectory/(auth)/sign-up"
+    echo "$tab sign-in & sign-up pages copied successfully."
 
     # ----------------------
     # Auth components
@@ -225,19 +228,21 @@ if $authFlag; then
     
     # ----------------------
     # Auth api
-    create_directory "$appDirectory/api" "/app/api"
-    create_directory "$appDirectory/api/auth" "/app/api/auth"
-    create_directory "$appDirectory/api/auth/[...nextauth]" "/app/api/auth/[...nextauth]"
+    create_directory "$appDirectory/api" "app/api"
+    create_directory "$appDirectory/api/auth" "app/api/auth"
+    create_directory "$appDirectory/api/auth/[...nextauth]" "app/api/auth/[...nextauth]"
     cp $templatesDirectory/auth/api/route.ts "$appDirectory/api/auth/[...nextauth]"
 
     # ----------------------
     # Auth middleware
     cp $templatesDirectory/auth/middleware.ts $currentDirectory/src
     echo "$tab auth middleware copied successfully."
+    create_directory $middlewaresDirectory "middlewares"
+    cp $templatesDirectory/auth/middlewares/*.ts $middlewaresDirectory
 
     # ----------------------
     # Auth lib
-    cp $templatesDirectory/auth/auth.ts $libDirectory
+    cp $templatesDirectory/auth/lib/*.ts $libDirectory
     echo "$tab auth.ts copied successfully."
 
     # ----------------------
