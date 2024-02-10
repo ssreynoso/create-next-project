@@ -62,6 +62,8 @@ create_directory "$appDirectory/(with-nav-bar)" "app/(with-nav-bar)"
 create_directory $componentsDirectory components
 # components - data table
 create_directory "$componentsDirectory/data-table" components/data-table
+# components - navigation
+create_directory "$componentsDirectory/navigation" components/navigation
 # hooks
 create_directory $hooksDirectory "hooks"
 # lib
@@ -151,6 +153,10 @@ echo "$tab components copied successfully."
 # Data table
 cp $templatesDirectory/components/data-table/*.tsx $componentsDirectory/data-table
 echo "$tab data table components copied successfully."
+
+# Navigation
+cp $templatesDirectory/components/navigation/*.tsx $componentsDirectory/navigation
+echo "$tab navigation components copied successfully."
 
 # Types
 cp $templatesDirectory/types/*.ts $typesDirectory
