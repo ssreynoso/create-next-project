@@ -35,7 +35,7 @@
         --input: rgb(228, 228, 231);
         --ring: rgb(9, 9, 11);
 
-        --hover: rgba(0, 0, 0, .1);
+        --hover: rgba(0, 0, 0, .3);
 
         --radius: 0.5rem;
     }
@@ -73,7 +73,7 @@
         --input: rgb(39, 39, 42);
         --ring: rgb(212, 212, 216);
 
-        --hover: rgba(255,255,255,.1);
+        --hover: rgba(255,255,255,.3);
     }
 }
 

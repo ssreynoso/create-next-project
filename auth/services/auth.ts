@@ -41,13 +41,21 @@ export const config = {
             id: 'registration',
             name: 'credentials',
             credentials: {
-                username: { label: 'Username', type: 'text', placeholder: 'Ingrese usuario' },
-                password: { label: 'Password', type: 'password' },
+                email:        { label: 'email',        type: 'text' },
+                password:     { label: 'Password',     type: 'password' },
+                name:         { label: 'name',         type: 'text' },
+                surname:      { label: 'surname',      type: 'text' },
+                dayOfBirth:   { label: 'dayOfBirth',   type: 'text' },
+                monthOfBirth: { label: 'monthOfBirth', type: 'text' },
+                yearOfBirth:  { label: 'yearOfBirth',  type: 'text' },
+                genre:        { label: 'genre',        type: 'text' },
             },
             async authorize(credentials) {
                 // Esto es lo que se ejecuta cuando se hace login
                 // Se evalúan las credenciales de la manera que se quiera
                 // Si esta todo ok se retorna un nuevo usuario. Si no, se lanza un error
+                console.log('credentials', credentials)
+                
 
                 const user = {
                     ...credentials,

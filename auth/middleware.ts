@@ -1,12 +1,12 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { nextAuthMiddleware } from './middlewares/next-auth'
-import { JWT } from 'next-auth/jwt'
 
 // Puedo usar esto si quiero que next-auth se ejecute antes de mi middleware
 // export { default } from 'next-auth'
 
 // Si yo quiero ejecutar mi middleware antes que next-auth, tengo que hacer esto:
 export async function middleware(req: NextRequest) {
+    // Control de acceso a la API
     if (req.nextUrl.pathname.startsWith('/api')) {
         const refererHeader = req.headers.get('referer')
         const isSameOrigin  = refererHeader?.startsWith(req.nextUrl.origin)
@@ -18,6 +18,7 @@ export async function middleware(req: NextRequest) {
         }
     }
 
+    // Control de acceso a las rutas
     const authResponse = await nextAuthMiddleware(req)
     if (authResponse.redirect && authResponse.destination) {
         return NextResponse.redirect(authResponse.destination)

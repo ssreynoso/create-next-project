@@ -1,4 +1,4 @@
-import { config } from '@/lib/auth'
+import { config } from '@/services/auth'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import NextAuth from 'next-auth'
 

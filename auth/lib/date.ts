@@ -26,40 +26,21 @@ export const getDays = function () {
     ]
 }
 
-export const getMonths = function () {
+export const getMonths = function (lang: 'es' | 'en' = 'en') {
     return [
-        { value: '1', label: 'January' },
-        { value: '2', label: 'February' },
-        { value: '3', label: 'March' },
-        { value: '4', label: 'April' },
-        { value: '5', label: 'May' },
-        { value: '6', label: 'June' },
-        { value: '7', label: 'July' },
-        { value: '8', label: 'August' },
-        { value: '9', label: 'September' },
-        { value: '10', label: 'October' },
-        { value: '11', label: 'November' },
-        { value: '12', label: 'December' },
+        { value: 1,  name: lang === 'en' ? 'January'   : 'Enero'      },
+        { value: 2,  name: lang === 'en' ? 'February'  : 'Febrero'    },
+        { value: 3,  name: lang === 'en' ? 'March'     : 'Marzo'      },
+        { value: 4,  name: lang === 'en' ? 'April'     : 'Abril'      },
+        { value: 5,  name: lang === 'en' ? 'May'       : 'Mayo'       },
+        { value: 6,  name: lang === 'en' ? 'June'      : 'Junio'      },
+        { value: 7,  name: lang === 'en' ? 'July'      : 'Julio'      },
+        { value: 8,  name: lang === 'en' ? 'August'    : 'Agosto'     },
+        { value: 9,  name: lang === 'en' ? 'September' : 'Septiembre' },
+        { value: 10, name: lang === 'en' ? 'October'   : 'Octubre'    },
+        { value: 11, name: lang === 'en' ? 'November'  : 'Noviembre'  },
+        { value: 12, name: lang === 'en' ? 'December'  : 'Diciembre'  },
     ]
-}
-
-export const getMonthName = function (month: number) {
-    switch (month) {
-        case 1: return 'Enero'
-        case 2: return 'Febrero'
-        case 3: return 'Marzo'
-        case 4: return 'Abril'
-        case 5: return 'Mayo'
-        case 6: return 'Junio'
-        case 7: return 'Julio'
-        case 8: return 'Agosto'
-        case 9: return 'Septiembre'
-        case 10: return 'Octubre'
-        case 11: return 'Noviembre'
-        case 12: return 'Diciembre'
-    }
-
-    return 'undefined'
 }
 
 export const getFormattedDate = function (date: Date) {

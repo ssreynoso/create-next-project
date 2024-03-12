@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/providers/theme-provider'
 import { AppContextProvider } from '@/providers/app-context-provider'
 import { SessionProvider } from 'next-auth/react'
 import { Toaster } from '@/components/ui/toaster'
+import { ModalProvider } from './modal-provider'
 
 export const Providers = ({ children }: PropsWithChildren) => {
     return (
@@ -13,6 +14,7 @@ export const Providers = ({ children }: PropsWithChildren) => {
                 <SessionProvider>
                     {children}
                     <Toaster />
+                    <ModalProvider />
                 </SessionProvider>
             </AppContextProvider>
         </ThemeProvider>

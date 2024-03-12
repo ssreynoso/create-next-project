@@ -27,6 +27,7 @@ appDirectory="$currentDirectory/src/app/"
 componentsDirectory="$currentDirectory/src/components"
 hooksDirectory="$currentDirectory/src/hooks"
 libDirectory="$currentDirectory/src/lib"
+servicesDirectory="$currentDirectory/src/services"
 providersDirectory="$currentDirectory/src/providers"
 contextsDirectory="$currentDirectory/src/contexts"
 reducersDirectory="$currentDirectory/src/reducers"
@@ -64,10 +65,20 @@ create_directory $componentsDirectory components
 create_directory "$componentsDirectory/data-table" components/data-table
 # components - navigation
 create_directory "$componentsDirectory/navigation" components/navigation
+# components - modals
+create_directory "$componentsDirectory/modals" components/modals
+# components - ui
+create_directory "$componentsDirectory/ui" components/ui
+# components - form-fields
+create_directory "$componentsDirectory/form-fields" components/form-fields
 # hooks
 create_directory $hooksDirectory "hooks"
+# hooks - modals
+create_directory "$hooksDirectory/modals" "hooks/modals"
 # lib
 create_directory $libDirectory "lib"
+# services
+create_directory $servicesDirectory "services"
 # providers
 create_directory $providersDirectory "providers"
 # contexts
@@ -121,6 +132,10 @@ echo "$tab reducers files copied successfully."
 cp $templatesDirectory/hooks/*.ts $hooksDirectory
 echo "$tab hooks copied successfully."
 
+# Hooks - Modals
+cp $templatesDirectory/hooks/modals/*.ts $hooksDirectory/modals
+echo "$tab modal hooks copied successfully."
+
 # Linter, prettier and editorconfig
 cp $templatesDirectory/.eslintignore $currentDirectory
 echo "$tab .eslintignore copied successfully."
@@ -158,6 +173,18 @@ echo "$tab data table components copied successfully."
 cp $templatesDirectory/components/navigation/*.tsx $componentsDirectory/navigation
 echo "$tab navigation components copied successfully."
 
+# Modals
+cp $templatesDirectory/components/modals/*.tsx $componentsDirectory/modals
+echo "$tab modal components copied successfully."
+
+# UI
+cp $templatesDirectory/components/ui/*.tsx $componentsDirectory/ui
+echo "$tab ui components copied successfully."
+
+# Form fields
+cp $templatesDirectory/components/form-fields/* $componentsDirectory/form-fields
+echo "$tab form-field components copied successfully."
+
 # Types
 cp $templatesDirectory/types/*.ts $typesDirectory
 echo "$tab types copied successfully."
@@ -171,7 +198,7 @@ echo "$tab types copied successfully."
 # Instalación de dependencias
 echo "Instaling dependences..."
 
-pnpm install next-themes class-variance-authority clsx lucide-react @radix-ui/react-icons usehooks-ts just-debounce-it @tanstack/react-table
+pnpm install zustand next-themes class-variance-authority clsx lucide-react @radix-ui/react-icons usehooks-ts just-debounce-it @tanstack/react-table
 pnpm install eslint @typescript-eslint/eslint-plugin@latest eslint-plugin-react@latest @typescript-eslint/parser@latest tailwind-merge tailwindcss-animate -D
 
 # SHADCN COMPONENTS
@@ -179,7 +206,7 @@ pnpm install eslint @typescript-eslint/eslint-plugin@latest eslint-plugin-react@
 # Instalación de componentes de shadcn necesarios, uso propio comando shadcn
 echo "Instaling shadcn components..."
 
-components=("select" "button" "dropdown-menu" "table")
+components=("select" "button" "dropdown-menu" "table" "dialog")
 
 for component in "${components[@]}"; do
     echo "Y" | pnpm dlx shadcn-ui@latest add "$component"
@@ -206,7 +233,7 @@ done
 # Print whether the --auth flag was passed
 if $authFlag; then
     echo "-----------------AUTH-----------------"
-    echo "Instaling next-auth and zod..."
+    echo "Instaling next-auth, zod and date-fns..."
     pnpm install next-auth zod date-fns
 
     echo "Instaling shadcn components..."
@@ -220,8 +247,8 @@ if $authFlag; then
     create_directory "$appDirectory/(auth)" "app/(auth)"
     create_directory "$appDirectory/(auth)/sign-in" "app/(auth)/sign-in"
     create_directory "$appDirectory/(auth)/sign-up" "app/(auth)/sign-up"
-    cp $templatesDirectory/auth/pages/sign-in/page.tsx "$appDirectory/(auth)/sign-in"
-    cp $templatesDirectory/auth/pages/sign-up/page.tsx "$appDirectory/(auth)/sign-up"
+    cp $templatesDirectory/auth/pages/sign-in/*.tsx "$appDirectory/(auth)/sign-in"
+    cp $templatesDirectory/auth/pages/sign-up/*.tsx "$appDirectory/(auth)/sign-up"
     echo "$tab sign-in & sign-up pages copied successfully."
 
     # ----------------------
@@ -231,6 +258,12 @@ if $authFlag; then
     rm -rf "$componentsDirectory/nav-bar.tsx"
     cp $templatesDirectory/auth/nav-bar.tsx $componentsDirectory
     echo "$tab auth components copied successfully."
+
+    # ----------------------
+    # Auth schemas
+    create_directory "$currentDirectory/src/schemas" "/schemas"
+    cp $templatesDirectory/auth/schemas/*.ts "$currentDirectory/src/schemas"
+    echo "$tab auth schemas copied successfully."
     
     # ----------------------
     # Auth api
@@ -249,6 +282,11 @@ if $authFlag; then
     # ----------------------
     # Auth lib
     cp $templatesDirectory/auth/lib/*.ts $libDirectory
+    echo "$tab lib files copied successfully."
+
+    # ----------------------
+    # Auth services
+    cp $templatesDirectory/auth/services/*.ts $servicesDirectory
     echo "$tab auth.ts copied successfully."
 
     # ----------------------

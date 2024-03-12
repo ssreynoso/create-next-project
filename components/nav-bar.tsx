@@ -13,7 +13,7 @@ export const NavBar = () => {
             <div className="container h-full flex justify-center items-center relative">
                 {/* <Image src={Logo} alt='Logo' className='h-2/3 max-h-10 w-max absolute left-0' /> */}
                 <MainNav />
-                <ModeToggle className='absolute right-0 hidden xl:inline-flex'/>
+                <ModeToggle className='absolute right-8 hidden xl:inline-flex'/>
                 {/* <ChangeTheme /> */}
             </div>
         </NavBarDynamicBackground>

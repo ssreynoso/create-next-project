@@ -14,7 +14,7 @@ export const NavBar = () => {
             <div className="container h-full flex justify-center items-center relative">
                 {/* <Image src={Logo} alt='Logo' className='h-2/3 max-h-10 w-max absolute left-0' /> */}
                 <MainNav />
-                <div className='absolute right-0 hidden xl:inline-flex gap-2'>
+                <div className='absolute right-8 hidden xl:inline-flex gap-2'>
                     <AuthButton />
                     <ModeToggle />
                 </div>
