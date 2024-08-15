@@ -1,4 +1,3 @@
-import React from 'react'
 import { useDeleteModal } from '@/hooks/modals/use-delete-modal'
 import { Modal } from '@/components/ui/modal'
 import { Button } from '@/components/ui/button'
@@ -22,7 +21,7 @@ export const DeleteModal = () => {
             isOpen={isOpen}
             onClose={onClose}
         >
-            <div className='w-[400px] flex gap-2 justify-end'>
+            <div className='w-[500px] h-[50px] flex gap-2 justify-end items-end'>
                 <Button variant='outline' onClick={onClose}>Cancelar</Button>
                 <Button variant='destructive' onClick={handleDelete}>Eliminar</Button>
             </div>

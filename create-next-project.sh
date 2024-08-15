@@ -280,11 +280,6 @@ if $authFlag; then
     cp $templatesDirectory/auth/middlewares/*.ts $middlewaresDirectory
 
     # ----------------------
-    # Auth lib
-    cp $templatesDirectory/auth/lib/*.ts $libDirectory
-    echo "$tab lib files copied successfully."
-
-    # ----------------------
     # Auth services
     cp $templatesDirectory/auth/services/*.ts $servicesDirectory
     echo "$tab auth.ts copied successfully."

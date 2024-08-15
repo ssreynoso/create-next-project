@@ -6,6 +6,10 @@ import { nextAuthMiddleware } from './middlewares/next-auth'
 
 // Si yo quiero ejecutar mi middleware antes que next-auth, tengo que hacer esto:
 export async function middleware(req: NextRequest) {
+    if (req.nextUrl.pathname.trim() === '/manifest.json') {
+        return NextResponse.next()
+    }
+
     // Control de acceso a la API
     if (req.nextUrl.pathname.startsWith('/api')) {
         const refererHeader = req.headers.get('referer')

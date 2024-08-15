@@ -1,1 +1,10 @@
+dist/
+node_modules/
+src-tauri/
+coverage/
+src/components/ui
+vite.config.ts
+jest.config.js
+postcss.config.js
+tailwind.config.ts
 /src/components/ui
